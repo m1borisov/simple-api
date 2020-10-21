@@ -11,13 +11,13 @@ variables:
     value: '**/*.sln'
   - name: buildPlatform
     value: 'Any CPU'
-  - name: runsOnDevelop
-    value: ${{ eq( variables['Build.SourceBranch'], 'refs/heads/develop') }}
+  - name: runsOnMaster
+    value: ${{ eq( variables['Build.SourceBranch'], 'refs/heads/master') }}
   - name: buildConfiguration
-  ${{ if eq( variables['Build.SourceBranch'], 'refs/heads/master') }}:
-    value: 'Release'
-  ${{ if ne( variables['Build.SourceBranch'], 'refs/heads/master') }}:
-    value: 'Debug'
+    ${{ if eq(variables.runsOnMaster, True) }}:
+      value: 'Release'
+    ${{ if ne(variables.runsOnMaster, True) }}:
+      value: 'Debug'
 
 steps:
 - task: NuGetToolInstaller@1
