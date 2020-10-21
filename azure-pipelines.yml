@@ -9,10 +9,11 @@ pool:
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
-${{ if eq( variables['Build.SourceBranch'], 'refs/heads/master') }}:
-  BuildConfiguration: 'Release'
-${{ if ne( variables['Build.SourceBranch'], 'refs/heads/master') }}:
-  BuildConfiguration: 'Debug'
+  - name: buildConfiguration
+  ${{ if eq( variables['Build.SourceBranch'], 'refs/heads/master') }}:
+    value: 'Release'
+  ${{ if ne( variables['Build.SourceBranch'], 'refs/heads/master') }}:
+    value: 'Debug'
 
 steps:
 - task: NuGetToolInstaller@1
