@@ -33,3 +33,9 @@ steps:
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)'
     artifact: dist
+    
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish config'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/Web.config'
+    artifact: config
