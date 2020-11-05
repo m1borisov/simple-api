@@ -11,8 +11,6 @@ variables:
     value: '**/*.sln'
   - name: buildPlatform
     value: 'Any CPU'
-  - name: runsOnMaster
-    value: ${{ eq( variables['Build.SourceBranch'], 'refs/heads/master') }}
   - name: buildConfiguration
     default: 'Debug'
     ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
@@ -20,8 +18,7 @@ variables:
 
 steps:
 - script: |
-  echo Build current is ${{ variables.buildConfiguration }}
-  echo Build default is $(buildConfiguration)
+  echo Build current is ${{ variables.buildConfiguration }}, default is $(buildConfiguration)
 displayName: Echo Build value
 
 - task: NuGetToolInstaller@1
