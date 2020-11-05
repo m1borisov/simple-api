@@ -35,7 +35,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=true /p:PackageLocation="$(system.DefaultWorkingDirectory)/SimpleApi/DockerImmitation/Publish"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=true /p:PublishUrl="$(system.DefaultWorkingDirectory)/SimpleApi/DockerImmitation/Publish"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
