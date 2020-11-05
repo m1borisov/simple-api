@@ -14,9 +14,9 @@ variables:
   - name: runsOnMaster
     value: ${{ eq( variables['Build.SourceBranch'], 'refs/heads/master') }}
   - name: buildConfiguration
-    ${{ if eq(variables.runsOnMaster, True) }}:
+    ${{ eq( variables['Build.SourceBranch'], 'refs/heads/master') }}:
       value: 'Release'
-    ${{ if ne(variables.runsOnMaster, True) }}:
+    ${{ ne( variables['Build.SourceBranch'], 'refs/heads/master') }}:
       value: 'Debug'
 
 steps:
