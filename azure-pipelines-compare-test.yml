@@ -24,14 +24,15 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:PublishProfile=FolderPublishTest'
+    msbuildArgs: '/t:SimpleApi /p:DeployOnBuild=true /p:PublishProfile=FolderPublishTest'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.ArtifactStagingDirectory)'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    SourceFolder: '$(system.DefaultWorkingDirectory)/SimpleApi/Docker/Publish'
+    TargetFolder: '$(build.ArtifactStagingDirectory)'
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish artifacts'
