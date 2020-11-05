@@ -20,7 +20,7 @@ variables:
     ${{ if ne(variables.publishConfiguration, '') }}:
       value: ${{ variables.publishConfiguration }}
   - name: isPublish
-    value: ${{ ne(variables.publishConfiguration, '') }}:
+    value: ${{ ne(variables.publishConfiguration, '') }}
 
 steps:
 - script: |
