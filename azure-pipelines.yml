@@ -11,14 +11,19 @@ variables:
     value: '**/*.sln'
   - name: buildPlatform
     value: 'Any CPU'
-  - name: customConfiguration
+  - name: publishConfiguration
     ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
       value: 'Release'
   - name: buildConfiguration
-    ${{ if eq(variables.customConfiguration, '') }}:
+    ${{ if eq(variables.publishConfiguration, '') }}:
       value: 'Debug'
-    ${{ if ne(variables.customConfiguration, '') }}:
-      value: ${{ variables.customConfiguration }}
+    ${{ if ne(variables.publishConfiguration, '') }}:
+      value: ${{ variables.publishConfiguration }}
+  - name: isPublish
+    ${{ if eq(variables.publishConfiguration, '') }}:
+      value: false
+    ${{ if ne(variables.publishConfiguration, '') }}:
+      value: true
 
 steps:
 - script: |
@@ -33,11 +38,29 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
+  displayName: Build solution
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=true /p:PublishUrl="$(system.DefaultWorkingDirectory)/SimpleApi/DockerImmitation/Publish"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+  condition: and(succeeded(), eq(variables.isPublish, false))
+
+- task: VSBuild@1
+  displayName: Publish SimpleApi
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/t:SimpleApi /p:DeployOnBuild=true /p:PublishProfile=FolderPublishTest'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+  condition: and(succeeded(), eq(variables.isPublish, true))
+
+- task: CopyFiles@2
+  displayName: 'Copy published Files to: $(build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder: '$(system.DefaultWorkingDirectory)/SimpleApi/Docker/Publish'
+    TargetFolder: '$(build.ArtifactStagingDirectory)'
+  condition: and(succeeded(), eq(variables.isPublish, true))
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.ArtifactStagingDirectory)'
@@ -50,3 +73,4 @@ steps:
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)'
     artifact: dist
+  condition: and(succeeded(), eq(variables.isPublish, true))
