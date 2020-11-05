@@ -18,8 +18,9 @@ variables:
 
 steps:
 - script: |
-  echo Build current is ${{ variables.buildConfiguration }}
-displayName: Echo Build value
+    echo Build current is ${{ variables.buildConfiguration }}
+    echo Build default is $(buildConfiguration)
+  displayName: Echo Build value
 
 - task: NuGetToolInstaller@1
 
