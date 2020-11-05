@@ -7,10 +7,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  - name: solution
-    value: '**/*.sln'
-  - name: buildPlatform
-    value: 'Any CPU'
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
   - name: publishConfiguration
     ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
       value: 'Release'
