@@ -35,9 +35,15 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.ArtifactStagingDirectory)"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=true /p:PackageLocation="$(system.DefaultWorkingDirectory)/SimpleApi/DockerImmitation/Publish"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder: '$(system.DefaultWorkingDirectory)/SimpleApi/DockerImmitation/Publish'
+    TargetFolder: '$(build.ArtifactStagingDirectory)'
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish artifacts'
