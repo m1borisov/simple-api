@@ -65,10 +65,10 @@ steps:
   condition: and(succeeded(), eq(variables.isPublish, true))
 
 - task: VSBuild@1
-  displayName: Publish Web.API
+  displayName: Publish Web.API.Set
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/t:Web_API /p:DeployOnBuild=true /p:PublishProfile=Web_API'
+    msbuildArgs: '/t:Web_API_Set /p:DeployOnBuild=true /p:PublishProfile=WebAPISet'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   condition: and(succeeded(), eq(variables.isPublish, true))
@@ -90,8 +90,8 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy published Web.API Files to: $(build.ArtifactStagingDirectory)'
   inputs:
-    SourceFolder: '$(system.DefaultWorkingDirectory)/Web.API/Web.API/Publish'
-    TargetFolder: '$(build.ArtifactStagingDirectory)/Web.API'
+    SourceFolder: '$(system.DefaultWorkingDirectory)/WebAPISet/WebAPISet/Publish'
+    TargetFolder: '$(build.ArtifactStagingDirectory)/WebAPISet'
   condition: and(succeeded(), eq(variables.isPublish, true))
 
 - task: PublishPipelineArtifact@1

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleApi", "SimpleApi\Simp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{0DCB3B87-B6E9-47F1-ACAF-AB1CA3629531}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.API", "Web.API\Web.API.csproj", "{F7AB7CAD-6041-436B-9D6A-DEEB57064751}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.API.Set", "Web.API\Web.API.Set.csproj", "{F7AB7CAD-6041-436B-9D6A-DEEB57064751}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
