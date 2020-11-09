@@ -50,23 +50,33 @@ steps:
   displayName: Publish SimpleApi
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/t:SimpleApi /p:DeployOnBuild=true /p:PublishProfile=FolderPublishTest'
+    msbuildArgs: '/t:SimpleApi /p:DeployOnBuild=true /p:PublishProfile=PublishApi'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+  condition: and(succeeded(), eq(variables.isPublish, true))
+
+- task: VSBuild@1
+  displayName: Publish Web
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/t:SimpleApi /p:DeployOnBuild=true /p:PublishProfile=PublishWeb'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   condition: and(succeeded(), eq(variables.isPublish, true))
 
 - task: CopyFiles@2
-  displayName: 'Copy published Files to: $(build.ArtifactStagingDirectory)'
+  displayName: 'Copy published API Files to: $(build.ArtifactStagingDirectory)'
   inputs:
-    SourceFolder: '$(system.DefaultWorkingDirectory)/SimpleApi/Docker/Publish'
-    TargetFolder: '$(build.ArtifactStagingDirectory)'
+    SourceFolder: '$(system.DefaultWorkingDirectory)/SimpleApi/Api/Publish'
+    TargetFolder: '$(build.ArtifactStagingDirectory)/API'
   condition: and(succeeded(), eq(variables.isPublish, true))
 
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.ArtifactStagingDirectory)'
+  displayName: 'Copy published WEB Files to: $(build.ArtifactStagingDirectory)'
   inputs:
-    SourceFolder: '$(system.DefaultWorkingDirectory)/SimpleApi/DockerImmitation/Publish'
-    TargetFolder: '$(build.ArtifactStagingDirectory)'
+    SourceFolder: '$(system.DefaultWorkingDirectory)/WebApplication/Web/Publish'
+    TargetFolder: '$(build.ArtifactStagingDirectory)/WEB'
+  condition: and(succeeded(), eq(variables.isPublish, true))
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish artifacts'
