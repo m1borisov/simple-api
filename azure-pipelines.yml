@@ -64,6 +64,15 @@ steps:
     configuration: '$(buildConfiguration)'
   condition: and(succeeded(), eq(variables.isPublish, true))
 
+- task: VSBuild@1
+  displayName: Publish Web.API
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/t:WebApplication /p:DeployOnBuild=true /p:PublishProfile=Web.API'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+  condition: and(succeeded(), eq(variables.isPublish, true))
+
 - task: CopyFiles@2
   displayName: 'Copy published API Files to: $(build.ArtifactStagingDirectory)'
   inputs:
@@ -76,6 +85,13 @@ steps:
   inputs:
     SourceFolder: '$(system.DefaultWorkingDirectory)/WebApplication/Web/Publish'
     TargetFolder: '$(build.ArtifactStagingDirectory)/WEB'
+  condition: and(succeeded(), eq(variables.isPublish, true))
+
+- task: CopyFiles@2
+  displayName: 'Copy published Web.API Files to: $(build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder: '$(system.DefaultWorkingDirectory)/Web.API/Web.API/Publish'
+    TargetFolder: '$(build.ArtifactStagingDirectory)/Web.API'
   condition: and(succeeded(), eq(variables.isPublish, true))
 
 - task: PublishPipelineArtifact@1

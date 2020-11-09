@@ -1,6 +1,4 @@
 /packages
 /.vs
-/SimpleApi/bin
-/SimpleApi/obj
-/WebApplication/bin
-/WebApplication/obj
+/*/bin
+/*/obj
