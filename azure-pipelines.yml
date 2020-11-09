@@ -68,7 +68,7 @@ steps:
   displayName: Publish Web.API
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/t:Web_API /p:DeployOnBuild=true /p:PublishProfile=Web.API'
+    msbuildArgs: '/t:Web.API /p:DeployOnBuild=true /p:PublishProfile=Web.API'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   condition: and(succeeded(), eq(variables.isPublish, true))
